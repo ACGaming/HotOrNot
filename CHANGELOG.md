@@ -3,6 +3,10 @@ Hot Or Not
 
 Unreleased
 ----------
+* Fix Wooden Tongs texture (ACGaming)
+
+1.1.6 (2021-07-02 16:10:41 +0200)
+---------------------------------
 * Tongs, TFC is optional (ACGaming)
 
 TFC-1.1.5 (2021-06-12 16:06:55 +0200)

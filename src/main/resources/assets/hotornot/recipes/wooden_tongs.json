@@ -3,9 +3,8 @@
     "item": "hotornot:wooden_tongs"
   },
   "pattern": [
-    "W W",
-    " W ",
-    "W W"
+    " W",
+    "WW"
   ],
   "type": "forge:ore_shaped",
   "key": {

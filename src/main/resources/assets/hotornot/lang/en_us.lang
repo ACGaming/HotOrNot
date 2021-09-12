@@ -3,12 +3,9 @@ tooltip.hotornot.toocold=Too cold to handle! Wear protection.
 tooltip.hotornot.toolight=Too light to handle! Wear protection.
 
 item.hotornot.wooden_tongs.name=Wooden Tongs
-item.hotornot.wooden_tongs.tooltip=Tier I - Wear in the offhand to avoid bad effects
-
 item.hotornot.mitts.name=Mitts
-item.hotornot.mitts.tooltip=Tier II - Wear in the offhand to avoid bad effects
-
 item.hotornot.iron_tongs.name=Tongs
-item.hotornot.iron_tongs.tooltip=Tier III - Wear in the offhand to avoid bad effects
 
-itemGroup.hotornot=Hot or Not
+item.hotornot.hot_item.tooltip=Wear in the offhand to avoid bad effects
+
+itemGroup.hotornot=Hot or Not +

@@ -38,12 +38,15 @@ public class HotConfig
     @Config.Comment("How hot an item should be to start burning the player (in Celsius)")
     public static int HOT_ITEM = 480;
 
+    @Config.RequiresMcRestart()
     @Config.Comment("Max durability of the wooden tongs, 0 for infinite durability")
     public static int WOODEN_TONGS_DURABILITY = 1200;
 
+    @Config.RequiresMcRestart()
     @Config.Comment("Max durability of the mitts, 0 for infinite durability")
     public static int MITTS_DURABILITY = 12000;
 
+    @Config.RequiresMcRestart()
     @Config.Comment("Max durability of the tongs, 0 for infinite durability")
     public static int IRON_TONGS_DURABILITY = 0;
 
@@ -59,11 +62,12 @@ public class HotConfig
     @Config.Comment("Items that are excluded")
     public static String[] ITEM_REMOVALS = new String[] {"immersiveengineering:drill", "immersiveengineering:chemthrower", "immersivepetroleum:fluid_diesel", "immersivepetroleum:fluid_gasoline"};
 
+    @SuppressWarnings("unused")
     @Mod.EventBusSubscriber(modid = HotOrNot.MOD_ID)
     private static class EventHandler
     {
         @SubscribeEvent
-        public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event)
+        public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
         {
             if (event.getModID().equals(HotOrNot.MOD_ID))
             {

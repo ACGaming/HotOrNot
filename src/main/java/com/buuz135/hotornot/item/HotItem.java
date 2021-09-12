@@ -10,27 +10,29 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import com.buuz135.hotornot.HotOrNot;
-import com.buuz135.hotornot.config.HotConfig;
 
-public class MittsItem extends Item
+public class HotItem extends Item
 {
-    public MittsItem()
+    public HotItem(String name, int durability)
     {
-        setRegistryName(HotOrNot.MOD_ID, "mitts");
-        setTranslationKey(HotOrNot.MOD_ID + ".mitts");
-        setMaxStackSize(1);
-        if (HotConfig.MITTS_DURABILITY != 0)
+        super();
+        this.setRegistryName(HotOrNot.MOD_ID, name);
+        this.setTranslationKey(HotOrNot.MOD_ID + "." + name);
+        this.setMaxStackSize(1);
+        if (durability != 0)
         {
-            setMaxDamage(HotConfig.MITTS_DURABILITY);
+            this.setMaxDamage(durability);
         }
-        setCreativeTab(HotOrNot.HOTORNOT_TAB);
+        this.setCreativeTab(HotOrNot.HOTORNOT_TAB);
+
+        ModItems.ITEMS.add(this);
     }
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TextComponentTranslation("item.hotornot.mitts.tooltip").getUnformattedComponentText());
+        tooltip.add(new TextComponentTranslation("item.hotornot.hot_item.tooltip").getUnformattedComponentText());
     }
 
     @Override
