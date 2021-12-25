@@ -37,7 +37,7 @@ public class HotOrNot
 {
     public static final String MOD_ID = "hotornot";
     public static final String MOD_NAME = "Hot or Not +";
-    public static final String VERSION = "1.1.7";
+    public static final String VERSION = "1.1.8";
     public static final CreativeTabs HOTORNOT_TAB = new HotOrNotTab();
 
     @Mod.EventHandler

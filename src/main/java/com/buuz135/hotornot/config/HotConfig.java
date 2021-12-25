@@ -11,8 +11,8 @@ import com.buuz135.hotornot.HotOrNot;
 @Config(modid = HotOrNot.MOD_ID)
 public class HotConfig
 {
-    @Config.Comment("If true, hot effects for items will be enabled")
-    public static boolean HOT_ITEMS = true;
+    @Config.Comment("If true, effects for items will be enabled")
+    public static boolean ITEM_EFFECTS = true;
 
     @Config.Comment("If true, hot effects for fluids will be enabled")
     public static boolean HOT_FLUIDS = true;
