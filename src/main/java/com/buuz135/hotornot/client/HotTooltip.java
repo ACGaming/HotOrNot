@@ -55,12 +55,12 @@ public class HotTooltip
             {
                 event.getToolTip().add(FluidEffect.GAS.color + new TextComponentTranslation(FluidEffect.GAS.tooltip).getUnformattedText());
             }
-            else if (Loader.isModLoaded("tfc"))
+            else if (Loader.isModLoaded("tfc") && HotConfig.HOT_ITEMS)
             {
                 if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
                 {
                     IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (heat.getTemperature() >= HotConfig.HOT_ITEM)
+                    if (heat.getTemperature() >= HotConfig.HOT_ITEM_TEMP)
                     {
                         event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
                     }

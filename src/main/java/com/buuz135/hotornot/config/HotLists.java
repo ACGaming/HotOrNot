@@ -7,12 +7,12 @@ public class HotLists
 {
     public static boolean isHotFluid(FluidStack fluidStack)
     {
-        return HotConfig.HOT_FLUIDS && fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.HOT_FLUID + 273;
+        return HotConfig.HOT_FLUIDS && fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.HOT_FLUID_TEMP + 273;
     }
 
     public static boolean isColdFluid(FluidStack fluidStack)
     {
-        return HotConfig.COLD_FLUIDS && fluidStack.getFluid().getTemperature(fluidStack) <= HotConfig.COLD_FLUID + 273;
+        return HotConfig.COLD_FLUIDS && fluidStack.getFluid().getTemperature(fluidStack) <= HotConfig.COLD_FLUID_TEMP + 273;
     }
 
     public static boolean isGaseousFluid(FluidStack fluidStack)
@@ -35,12 +35,15 @@ public class HotLists
 
     public static boolean isHotItem(ItemStack stack)
     {
-        String regName = stack.getItem().getRegistryName().toString();
-        for (String s : HotConfig.HOT_ITEM_ADDITIONS)
+        if (HotConfig.HOT_ITEMS)
         {
-            if (regName.equals(s))
+            String regName = stack.getItem().getRegistryName().toString();
+            for (String s : HotConfig.HOT_ITEM_ADDITIONS)
             {
-                return true;
+                if (regName.equals(s))
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -48,12 +51,15 @@ public class HotLists
 
     public static boolean isColdItem(ItemStack stack)
     {
-        String regName = stack.getItem().getRegistryName().toString();
-        for (String s : HotConfig.COLD_ITEM_ADDITIONS)
+        if (HotConfig.COLD_ITEMS)
         {
-            if (regName.equals(s))
+            String regName = stack.getItem().getRegistryName().toString();
+            for (String s : HotConfig.COLD_ITEM_ADDITIONS)
             {
-                return true;
+                if (regName.equals(s))
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -61,12 +67,15 @@ public class HotLists
 
     public static boolean isGaseousItem(ItemStack stack)
     {
-        String regName = stack.getItem().getRegistryName().toString();
-        for (String s : HotConfig.GASEOUS_ITEM_ADDITIONS)
+        if (HotConfig.GASEOUS_ITEMS)
         {
-            if (regName.equals(s))
+            String regName = stack.getItem().getRegistryName().toString();
+            for (String s : HotConfig.GASEOUS_ITEM_ADDITIONS)
             {
-                return true;
+                if (regName.equals(s))
+                {
+                    return true;
+                }
             }
         }
         return false;

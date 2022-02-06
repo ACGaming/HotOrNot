@@ -11,8 +11,14 @@ import com.buuz135.hotornot.HotOrNot;
 @Config(modid = HotOrNot.MOD_ID)
 public class HotConfig
 {
-    @Config.Comment("If true, effects for items will be enabled")
-    public static boolean ITEM_EFFECTS = true;
+    @Config.Comment("If true, hot effects for items will be enabled")
+    public static boolean HOT_ITEMS = true;
+
+    @Config.Comment("If true, cold effects for items will be enabled")
+    public static boolean COLD_ITEMS = true;
+
+    @Config.Comment("If true, gaseous effects for items will be enabled")
+    public static boolean GASEOUS_ITEMS = true;
 
     @Config.Comment("If true, hot effects for fluids will be enabled")
     public static boolean HOT_FLUIDS = true;
@@ -30,13 +36,13 @@ public class HotConfig
     public static boolean YEET = true;
 
     @Config.Comment("How hot a fluid should be to start burning the player (in Celsius)")
-    public static int HOT_FLUID = 480;
+    public static int HOT_FLUID_TEMP = 480;
 
     @Config.Comment("How cold a fluid should be to start adding effects the player (in Celsius)")
-    public static int COLD_FLUID = 0;
+    public static int COLD_FLUID_TEMP = 0;
 
     @Config.Comment("How hot an item should be to start burning the player (in Celsius)")
-    public static int HOT_ITEM = 480;
+    public static int HOT_ITEM_TEMP = 480;
 
     @Config.RequiresMcRestart()
     @Config.Comment("Max durability of the wooden tongs, 0 for infinite durability")
