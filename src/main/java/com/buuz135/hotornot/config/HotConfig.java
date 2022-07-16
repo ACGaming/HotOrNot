@@ -92,11 +92,15 @@ public class HotConfig
 
     @Config.Name("Custom gaseous items")
     @Config.Comment("Gaseous items that are included manually")
-    public static String[] CUSTOM_GASEOUS_ITEMS = new String[] {"mod_id:item"};
+    public static String[] CUSTOM_GASEOUS_ITEMS = new String[] {};
 
     @Config.Name("Excluded items")
     @Config.Comment("Items that are exempt from effects")
     public static String[] CUSTOM_REMOVALS = new String[] {"immersiveengineering:drill", "immersiveengineering:chemthrower", "immersivepetroleum:fluid_diesel", "immersivepetroleum:fluid_gasoline"};
+
+    @Config.Name("Custom protection items")
+    @Config.Comment("Additional items that protect the player from effects")
+    public static String[] CUSTOM_PROTECTION_ITEM = new String[] {};
 
     @SuppressWarnings("unused")
     @Mod.EventBusSubscriber(modid = HotOrNot.MOD_ID)

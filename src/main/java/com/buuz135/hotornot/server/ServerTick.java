@@ -135,7 +135,19 @@ public class ServerTick
             }
             return true;
         }
-        return false;
+        else
+        {
+            String regName = offHand.getItem().getRegistryName().toString();
+            for (String s : HotConfig.CUSTOM_PROTECTION_ITEM)
+            {
+                if (regName.equals(s))
+                {
+                    offHand.damageItem(HotConfig.ITEM_DAMAGE, player);
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     public static void applyHotEffect(EntityPlayer player, int index)
