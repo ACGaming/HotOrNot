@@ -31,7 +31,11 @@ public class HotTooltip
             if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
             {
                 IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-                FluidStack fluidStack = fluidHandlerItem.drain(1000, false);
+                FluidStack fluidStack = null;
+                if (fluidHandlerItem != null)
+                {
+                    fluidStack = fluidHandlerItem.drain(1000, false);
+                }
                 if (fluidStack != null)
                 {
                     for (FluidEffect effect : FluidEffect.values())
@@ -65,11 +69,15 @@ public class HotTooltip
                 if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
                 {
                     IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (heat.getTemperature() >= HotConfig.TEMP_HOT_ITEM)
+                    if (heat != null && heat.getTemperature() >= HotConfig.TEMP_HOT_ITEM)
                     {
                         event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
                     }
                 }
+            }
+            else if (HotLists.isCustomProtectionItem(stack))
+            {
+                event.getToolTip().add(new TextComponentTranslation("item.hotornot.hot_item.tooltip").getUnformattedComponentText());
             }
         }
     }

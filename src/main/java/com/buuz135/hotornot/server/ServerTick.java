@@ -30,7 +30,6 @@ public class ServerTick
     {
         World world = event.player.world;
         EntityPlayer player = event.player;
-
         if (event.phase == TickEvent.Phase.START && !world.isRemote && world.getTotalWorldTime() % HotConfig.TICK_RATE == 0)
         {
             if (!player.isBurning() && !player.isCreative() && player.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
@@ -135,19 +134,12 @@ public class ServerTick
             }
             return true;
         }
-        else
+        else if (HotLists.isCustomProtectionItem(offHand))
         {
-            String regName = offHand.getItem().getRegistryName().toString();
-            for (String s : HotConfig.CUSTOM_PROTECTION_ITEM)
-            {
-                if (regName.equals(s))
-                {
-                    offHand.damageItem(HotConfig.ITEM_DAMAGE, player);
-                    return true;
-                }
-            }
-            return false;
+            offHand.damageItem(HotConfig.ITEM_DAMAGE, player);
+            return true;
         }
+        return false;
     }
 
     public static void applyHotEffect(EntityPlayer player, int index)

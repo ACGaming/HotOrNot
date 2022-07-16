@@ -80,4 +80,17 @@ public class HotLists
         }
         return false;
     }
+
+    public static boolean isCustomProtectionItem(ItemStack stack)
+    {
+        String regName = stack.getItem().getRegistryName().toString();
+        for (String s : HotConfig.CUSTOM_PROTECTION_ITEM)
+        {
+            if (regName.equals(s))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
