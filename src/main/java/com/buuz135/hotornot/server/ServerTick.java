@@ -1,13 +1,14 @@
 package com.buuz135.hotornot.server;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -25,78 +26,78 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
 public class ServerTick
 {
     @SubscribeEvent
-    public static void onTick(TickEvent.WorldTickEvent event)
+    public static void onTick(TickEvent.PlayerTickEvent event)
     {
-        if (event.phase == TickEvent.Phase.START)
+        World world = event.player.world;
+        EntityPlayer player = event.player;
+
+        if (event.phase == TickEvent.Phase.START && !world.isRemote && world.getTotalWorldTime() % HotConfig.TICK_RATE == 0)
         {
-            for (EntityPlayerMP entityPlayerMP : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
+            if (!player.isBurning() && !player.isCreative() && player.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
             {
-                if (!entityPlayerMP.isBurning() && !entityPlayerMP.isCreative() && entityPlayerMP.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
+                IItemHandler handler = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                for (int i = 0; i < handler.getSlots(); i++)
                 {
-                    IItemHandler handler = entityPlayerMP.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                    for (int i = 0; i < handler.getSlots(); i++)
+                    ItemStack stack = handler.extractItem(i, 1, true);
+                    if (!stack.isEmpty() && !HotLists.isRemovedItem(stack))
                     {
-                        ItemStack stack = handler.extractItem(i, 1, true);
-                        if (!stack.isEmpty() && !HotLists.isRemovedItem(stack))
+                        // FLUIDS
+                        if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
                         {
-                            // FLUIDS
-                            if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+                            IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+                            FluidStack fluidStack = fluidHandlerItem.drain(1000, false);
+                            if (fluidStack != null)
                             {
-                                IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-                                FluidStack fluidStack = fluidHandlerItem.drain(1000, false);
-                                if (fluidStack != null)
+                                if (HotLists.isHotFluid(fluidStack) || HotLists.isColdFluid(fluidStack) || HotLists.isGaseousFluid(fluidStack))
                                 {
-                                    if (HotLists.isHotFluid(fluidStack) || HotLists.isColdFluid(fluidStack) || HotLists.isGaseousFluid(fluidStack))
+                                    if (!damageProtectionItem(player))
                                     {
-                                        if (!damageProtectionItem(entityPlayerMP) && event.world.getTotalWorldTime() % 20 == 0)
+                                        if (HotLists.isHotFluid(fluidStack))
                                         {
-                                            if (HotLists.isHotFluid(fluidStack))
-                                            {
-                                                applyHotEffect(entityPlayerMP, stack, i);
-                                            }
-                                            else if (HotLists.isColdFluid(fluidStack))
-                                            {
-                                                applyColdEffect(entityPlayerMP);
-                                            }
-                                            else if (HotLists.isGaseousFluid(fluidStack))
-                                            {
-                                                applyGaseousEffect(entityPlayerMP);
-                                            }
+                                            applyHotEffect(player, i);
+                                        }
+                                        else if (HotLists.isColdFluid(fluidStack))
+                                        {
+                                            applyColdEffect(player);
+                                        }
+                                        else if (HotLists.isGaseousFluid(fluidStack))
+                                        {
+                                            applyGaseousEffect(player);
                                         }
                                     }
                                 }
                             }
-                            // CONFIG-ADDED ITEMS
-                            else if (HotLists.isHotItem(stack) || HotLists.isColdItem(stack) || HotLists.isGaseousItem(stack))
+                        }
+                        // CONFIG-ADDED ITEMS
+                        else if (HotLists.isHotItem(stack) || HotLists.isColdItem(stack) || HotLists.isGaseousItem(stack))
+                        {
+                            if (!damageProtectionItem(player))
                             {
-                                if (!damageProtectionItem(entityPlayerMP) && event.world.getTotalWorldTime() % 20 == 0)
+                                if (HotLists.isHotItem(stack))
                                 {
-                                    if (HotLists.isHotItem(stack))
-                                    {
-                                        applyHotEffect(entityPlayerMP, stack, i);
-                                    }
-                                    else if (HotLists.isColdItem(stack))
-                                    {
-                                        applyColdEffect(entityPlayerMP);
-                                    }
-                                    else if (HotLists.isGaseousItem(stack))
-                                    {
-                                        applyGaseousEffect(entityPlayerMP);
-                                    }
+                                    applyHotEffect(player, i);
+                                }
+                                else if (HotLists.isColdItem(stack))
+                                {
+                                    applyColdEffect(player);
+                                }
+                                else if (HotLists.isGaseousItem(stack))
+                                {
+                                    applyGaseousEffect(player);
                                 }
                             }
-                            // TFC ITEMS
-                            else if (Loader.isModLoaded("tfc") && HotConfig.HOT_ITEMS)
+                        }
+                        // TFC ITEMS
+                        else if (Loader.isModLoaded("tfc") && HotConfig.HOT_ITEMS)
+                        {
+                            if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
                             {
-                                if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
+                                IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                                if (heatHandlerItem.getTemperature() >= HotConfig.TEMP_HOT_ITEM)
                                 {
-                                    IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                                    if (heatHandlerItem.getTemperature() >= HotConfig.HOT_ITEM_TEMP)
+                                    if (!damageProtectionItem(player))
                                     {
-                                        if (!damageProtectionItem(entityPlayerMP) && event.world.getTotalWorldTime() % 20 == 0)
-                                        {
-                                            applyHotEffect(entityPlayerMP, stack, i);
-                                        }
+                                        applyHotEffect(player, i);
                                     }
                                 }
                             }
@@ -107,54 +108,60 @@ public class ServerTick
         }
     }
 
-    public static boolean damageProtectionItem(EntityPlayerMP entityPlayerMP)
+    public static boolean damageProtectionItem(EntityPlayer player)
     {
-        ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
+        ItemStack offHand = player.getHeldItemOffhand();
         if (offHand.getItem().equals(ModItems.MITTS))
         {
-            if (HotConfig.MITTS_DURABILITY != 0)
+            if (HotConfig.DURABILITY_MITTS != 0)
             {
-                offHand.damageItem(1, entityPlayerMP);
+                offHand.damageItem(HotConfig.ITEM_DAMAGE, player);
             }
             return true;
         }
         else if (offHand.getItem().equals(ModItems.WOODEN_TONGS))
         {
-            if (HotConfig.WOODEN_TONGS_DURABILITY != 0)
+            if (HotConfig.DURABILITY_WOODEN_TONGS != 0)
             {
-                offHand.damageItem(1, entityPlayerMP);
+                offHand.damageItem(HotConfig.ITEM_DAMAGE, player);
             }
             return true;
         }
         else if (offHand.getItem().equals(ModItems.IRON_TONGS))
         {
-            if (HotConfig.IRON_TONGS_DURABILITY != 0)
+            if (HotConfig.DURABILITY_IRON_TONGS != 0)
             {
-                offHand.damageItem(1, entityPlayerMP);
+                offHand.damageItem(HotConfig.ITEM_DAMAGE, player);
             }
             return true;
         }
         return false;
     }
 
-    public static void applyHotEffect(EntityPlayerMP entityPlayerMP, ItemStack stack, int index)
+    public static void applyHotEffect(EntityPlayer player, int index)
     {
-        entityPlayerMP.setFire(1);
+        player.setFire(1);
         if (HotConfig.YEET)
         {
-            entityPlayerMP.dropItem(stack, false, true);
-            entityPlayerMP.inventory.decrStackSize(index, 1);
+            if (HotConfig.YEET_STACK)
+            {
+                ForgeHooks.onPlayerTossEvent(player, player.inventory.decrStackSize(index, player.inventory.getStackInSlot(index).getCount()), true);
+            }
+            else
+            {
+                ForgeHooks.onPlayerTossEvent(player, player.inventory.decrStackSize(index, 1), true);
+            }
         }
     }
 
-    public static void applyColdEffect(EntityPlayerMP entityPlayerMP)
+    public static void applyColdEffect(EntityPlayer player)
     {
-        entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
-        entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
+        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
+        player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
     }
 
-    public static void applyGaseousEffect(EntityPlayerMP entityPlayerMP)
+    public static void applyGaseousEffect(EntityPlayer player)
     {
-        entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1));
+        player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1));
     }
 }

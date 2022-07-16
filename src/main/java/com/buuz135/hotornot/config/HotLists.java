@@ -7,12 +7,12 @@ public class HotLists
 {
     public static boolean isHotFluid(FluidStack fluidStack)
     {
-        return HotConfig.HOT_FLUIDS && fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.HOT_FLUID_TEMP + 273;
+        return HotConfig.HOT_FLUIDS && fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.TEMP_HOT_FLUID + 273;
     }
 
     public static boolean isColdFluid(FluidStack fluidStack)
     {
-        return HotConfig.COLD_FLUIDS && fluidStack.getFluid().getTemperature(fluidStack) <= HotConfig.COLD_FLUID_TEMP + 273;
+        return HotConfig.COLD_FLUIDS && fluidStack.getFluid().getTemperature(fluidStack) <= HotConfig.TEMP_COLD_FLUID + 273;
     }
 
     public static boolean isGaseousFluid(FluidStack fluidStack)
@@ -23,7 +23,7 @@ public class HotLists
     public static boolean isRemovedItem(ItemStack stack)
     {
         String regName = stack.getItem().getRegistryName().toString();
-        for (String s : HotConfig.ITEM_REMOVALS)
+        for (String s : HotConfig.CUSTOM_REMOVALS)
         {
             if (regName.equals(s))
             {
@@ -38,7 +38,7 @@ public class HotLists
         if (HotConfig.HOT_ITEMS)
         {
             String regName = stack.getItem().getRegistryName().toString();
-            for (String s : HotConfig.HOT_ITEM_ADDITIONS)
+            for (String s : HotConfig.CUSTOM_HOT_ITEMS)
             {
                 if (regName.equals(s))
                 {
@@ -54,7 +54,7 @@ public class HotLists
         if (HotConfig.COLD_ITEMS)
         {
             String regName = stack.getItem().getRegistryName().toString();
-            for (String s : HotConfig.COLD_ITEM_ADDITIONS)
+            for (String s : HotConfig.CUSTOM_COLD_ITEMS)
             {
                 if (regName.equals(s))
                 {
@@ -70,7 +70,7 @@ public class HotLists
         if (HotConfig.GASEOUS_ITEMS)
         {
             String regName = stack.getItem().getRegistryName().toString();
-            for (String s : HotConfig.GASEOUS_ITEM_ADDITIONS)
+            for (String s : HotConfig.CUSTOM_GASEOUS_ITEMS)
             {
                 if (regName.equals(s))
                 {

@@ -38,20 +38,25 @@ public class HotTooltip
                     {
                         if (effect.isValid.test(fluidStack))
                         {
-                            event.getToolTip().add(effect.color + new TextComponentTranslation(effect.tooltip).getUnformattedText());
+                            if ((effect.equals(FluidEffect.HOT) && HotConfig.HOT_FLUIDS) ||
+                                (effect.equals(FluidEffect.COLD) && HotConfig.COLD_FLUIDS) ||
+                                (effect.equals(FluidEffect.GAS) && HotConfig.GASEOUS_FLUIDS))
+                            {
+                                event.getToolTip().add(effect.color + new TextComponentTranslation(effect.tooltip).getUnformattedText());
+                            }
                         }
                     }
                 }
             }
-            else if (HotLists.isHotItem(stack))
+            else if (HotConfig.HOT_ITEMS && HotLists.isHotItem(stack))
             {
                 event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
             }
-            else if (HotLists.isColdItem(stack))
+            else if (HotConfig.COLD_ITEMS && HotLists.isColdItem(stack))
             {
                 event.getToolTip().add(FluidEffect.COLD.color + new TextComponentTranslation(FluidEffect.COLD.tooltip).getUnformattedText());
             }
-            else if (HotLists.isGaseousItem(stack))
+            else if (HotConfig.GASEOUS_ITEMS && HotLists.isGaseousItem(stack))
             {
                 event.getToolTip().add(FluidEffect.GAS.color + new TextComponentTranslation(FluidEffect.GAS.tooltip).getUnformattedText());
             }
@@ -60,7 +65,7 @@ public class HotTooltip
                 if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
                 {
                     IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (heat.getTemperature() >= HotConfig.HOT_ITEM_TEMP)
+                    if (heat.getTemperature() >= HotConfig.TEMP_HOT_ITEM)
                     {
                         event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
                     }

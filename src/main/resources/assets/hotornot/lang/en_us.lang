@@ -1,6 +1,6 @@
-tooltip.hotornot.toohot=Too hot to handle! Wear protection.
-tooltip.hotornot.toocold=Too cold to handle! Wear protection.
-tooltip.hotornot.toolight=Too light to handle! Wear protection.
+tooltip.hotornot.toohot=Too hot to handle! Wear tongs or mitts in the offhand.
+tooltip.hotornot.toocold=Too cold to handle! Wear tongs or mitts in the offhand.
+tooltip.hotornot.toolight=Too light to handle! Wear tongs or mitts in the offhand.
 
 item.hotornot.wooden_tongs.name=Wooden Tongs
 item.hotornot.mitts.name=Mitts
