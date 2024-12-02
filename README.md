@@ -16,8 +16,7 @@ New items
 
 ![](https://i.imgur.com/rPO7VxG.png)
 
-**Tier I  
-**
+**Tier I**
 
 Cheapest option, only costs wood and won't last long.
 
