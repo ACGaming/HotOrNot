@@ -14,6 +14,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.alcatrazescapee.tinkersforging.common.capability.CapabilityForgeItem;
+import com.alcatrazescapee.tinkersforging.common.capability.IForgeItem;
 import com.buuz135.hotornot.config.HotConfig;
 import com.buuz135.hotornot.config.HotLists;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
@@ -69,6 +71,17 @@ public class HotTooltip
                 if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
                 {
                     IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                    if (heat != null && heat.getTemperature() >= HotConfig.TEMP_HOT_ITEM)
+                    {
+                        event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
+                    }
+                }
+            }
+            else if (Loader.isModLoaded("tinkersforging") && HotConfig.HOT_ITEMS)
+            {
+                if (stack.hasCapability(CapabilityForgeItem.CAPABILITY, null))
+                {
+                    IForgeItem heat = stack.getCapability(CapabilityForgeItem.CAPABILITY, null);
                     if (heat != null && heat.getTemperature() >= HotConfig.TEMP_HOT_ITEM)
                     {
                         event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());

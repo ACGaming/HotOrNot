@@ -31,7 +31,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
     modid = HotOrNot.MOD_ID,
     name = HotOrNot.MOD_NAME,
     version = HotOrNot.VERSION,
-    dependencies = "after:tfc"
+    dependencies = "after:tfc;after:tinkersforging"
 )
 public class HotOrNot
 {

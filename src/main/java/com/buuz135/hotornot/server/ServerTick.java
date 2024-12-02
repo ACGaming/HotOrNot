@@ -16,6 +16,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import com.alcatrazescapee.tinkersforging.common.capability.CapabilityForgeItem;
+import com.alcatrazescapee.tinkersforging.common.capability.IForgeItem;
 import com.buuz135.hotornot.config.HotConfig;
 import com.buuz135.hotornot.config.HotLists;
 import com.buuz135.hotornot.item.ModItems;
@@ -92,6 +94,21 @@ public class ServerTick
                             if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
                             {
                                 IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                                if (heatHandlerItem.getTemperature() >= HotConfig.TEMP_HOT_ITEM)
+                                {
+                                    if (!damageProtectionItem(player))
+                                    {
+                                        applyHotEffect(player, i);
+                                    }
+                                }
+                            }
+                        }
+                        // TINKER'S FORGING ITEMS
+                        else if (Loader.isModLoaded("tinkersforging") && HotConfig.HOT_ITEMS)
+                        {
+                            if (stack.hasCapability(CapabilityForgeItem.CAPABILITY, null))
+                            {
+                                IForgeItem heatHandlerItem = stack.getCapability(CapabilityForgeItem.CAPABILITY, null);
                                 if (heatHandlerItem.getTemperature() >= HotConfig.TEMP_HOT_ITEM)
                                 {
                                     if (!damageProtectionItem(player))
